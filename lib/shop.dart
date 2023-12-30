@@ -1,4 +1,5 @@
 import 'package:ecommerce/Cart.dart';
+import 'package:ecommerce/components/ProductCard.dart';
 import 'package:ecommerce/products.dart';
 import 'package:ecommerce/components/BottomNav.dart';
 import 'package:flutter/material.dart';
@@ -11,25 +12,46 @@ class ShoppinPage extends StatefulWidget {
 }
 
 class _ShoppinPageState extends State<ShoppinPage> {
-  int _selectedIndex=0;
+  bool _load = false;
 
-  void navigateBottom(int index){
+  void update(bool success) {
     setState(() {
-      _selectedIndex=index;
+      _load = true; // show product list
+      if (!success) {
+        // API request failed
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('failed to load data')));
+      }
     });
   }
-  final List<Widget> _pages=[
-    const Shop(),
-    const Cart()
-  ];
+
+  int _selectedIndex = 0;
+
+  void navigateBottom(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  final List<Widget> _pages = [const Shop(), const Cart()];
+
+  @override
+  void initState() {
+    updateProducts(update);
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       bottomNavigationBar: BottomNav(
-        onTabChange: (index)=>navigateBottom(index),
+        onTabChange: (index) => navigateBottom(index),
       ),
-      body: _pages[_selectedIndex],
+      body: !_load ? const Center(
+          child: SizedBox(width: 100, height: 100, child: CircularProgressIndicator())
+      )
+     : _pages[_selectedIndex],
     );
   }
 }
-

@@ -1,16 +1,18 @@
 import 'dart:core';
 
-class Product{
-  final int pid;
-  final String name;
-  final int quantity;
-  final double price;
-  final String category;
-  final String description;
-  final List<String> sizes;
-  final List<String> colors;
-  final List<String> images;
+import 'package:ecommerce/classes/Colors.dart';
+import 'package:ecommerce/classes/Images.dart';
+import 'package:ecommerce/classes/Sizes.dart';
 
-  Product(this.pid,this.name, this.quantity, this.price, this.category, this.description,
+class Product {
+  int pid;
+  String name;
+  int quantity;
+  double price;
+  String category;
+  List<SizesClass> sizes;
+  List<ColorsClass> colors;
+  List<ImagesClass> images;
+  Product(this.pid, this.name, this.quantity, this.price, this.category,
       this.sizes, this.colors, this.images);
 }
